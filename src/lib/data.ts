@@ -1,0 +1,6 @@
+import type { Loan } from "@/types"
+
+export const mockLoans: Loan[] = [
+  {"rashi": [{"id": 8, "name": "homw", "amount": 100000.0, "interest_rate": 1.0, "monthly_payment": 100083.33, "start_date": "2025-02-28", "tenure": 1, "status": "active", "total_interest": 83.33, "total_amount": 100083.33, "foreclosure_amount": null, "foreclosure_date": null}, {"id": 9, "name": "fsdfsdfasdf", "amount": 122222.0, "interest_rate": 12.0, "monthly_payment": 11407.39, "start_date": "2025-02-28", "tenure": 12, "status": "closed", "total_interest": 14666.64, "total_amount": 136888.64, "foreclosure_amount": 102851.52, "foreclosure_date": "2025-03-28"}], "test2": [{"id": 10, "name": "vaehicle loan", "amount": 10000.0, "interest_rate": 12.0, "monthly_payment": 2600.0, "start_date": "2025-03-01", "tenure": 4, "status": "active", "total_interest": 400.0, "total_amount": 10400.0, "foreclosure_amount": null, "foreclosure_date": null}, {"id": 11, "name": "test", "amount": 50000.0, "interest_rate": 12.0, "monthly_payment": 5045.45, "start_date": "2025-03-01", "tenure": 11, "status": "closed", "total_interest": 5500.0, "total_amount": 55500.0, "foreclosure_amount": 45677.3, "foreclosure_date": "2025-03-28"}]}
+]
+

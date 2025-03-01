@@ -1,6 +1,8 @@
+"use client"
+
 import { useState } from "react";
 import type { Loan } from "@/lib/types";
-import { formatCurrency, formatDate, cn } from "@/lib/utils";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,9 +15,11 @@ import {
 } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar } from "@/components/ui/calendar";
 import { generateAmortizationSchedule } from "@/lib/loan-calculations";
-import toast ,{Toaster} from "react-hot-toast";
+import toast from "react-hot-toast";
+import UserAxiosInstance from "@/axiosinstance/UserAxiosInstance";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css"; // Default styles for React-Day-Picker
 
 interface LoanDetailsProps {
   loan: Loan;
@@ -30,7 +34,7 @@ export default function LoanDetails({ loan, onForeclose }: LoanDetailsProps) {
     { name: "Principal", value: loan.amount, color: "#8884d8" },
     { name: "Interest", value: loan.totalInterest, color: "#82ca9d" },
   ];
-  
+
   const startDate = new Date(loan.startDate);
   const amortizationSchedule = generateAmortizationSchedule(loan.amount, loan.interestRate, loan.tenure, startDate);
 
@@ -50,11 +54,27 @@ export default function LoanDetails({ loan, onForeclose }: LoanDetailsProps) {
   const handleForeclose = () => {
     if (foreclosureDate) {
       const foreclosureAmount = calculateForeclosureAmount(amortizationSchedule, foreclosureDate);
-      
-      // Mock API call since we don't have the actual axios instance
-      console.log(`Foreclosing loan ${loan.id} with amount ${foreclosureAmount.toFixed(2)}`);
-      toast.success('Foreclosure successful');
-      
+
+      // Mock API call
+      UserAxiosInstance.patch(`/api/loans/${loan.id}/`, {
+        id: loan.id,
+        foreclosure_date: foreclosureDate.toISOString().split("T")[0],
+        status: 'closed',
+        foreclosure_amount: foreclosureAmount.toFixed(2)
+      })
+      .then(() => {
+        toast.success('Foreclosure successful');
+
+        // Optional: Reload page after a delay
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 1000);
+      })
+      .catch((error) => {
+        console.error("Error foreclosing loan:", error);
+        toast.error("Failed to foreclose loan");
+      });
+
       onForeclose(loan.id, foreclosureDate);
       setIsDialogOpen(false);
     }
@@ -144,7 +164,7 @@ export default function LoanDetails({ loan, onForeclose }: LoanDetailsProps) {
                   </tr>
                 </thead>
                 <tbody>
-                  {amortizationSchedule.map((entry, index) => (
+                  {amortizationSchedule.slice(0, 10).map((entry, index) => (
                     <tr key={index} className="border-t">
                       <td className="px-4 py-2">{index + 1}</td>
                       <td className="px-4 py-2">{formatDate(entry.date)}</td>
@@ -189,49 +209,24 @@ export default function LoanDetails({ loan, onForeclose }: LoanDetailsProps) {
             <DialogTrigger asChild>
               <Button variant="destructive">Foreclose Loan</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Foreclose Loan</DialogTitle>
                 <DialogDescription>
                   Select a date to foreclose this loan. Interest will be calculated up to this date.
                 </DialogDescription>
               </DialogHeader>
-              <div className="py-4 flex justify-center">
-                <Calendar
+              <div className="flex justify-center p-4">
+                
+                <DayPicker
                   mode="single"
                   selected={foreclosureDate}
                   onSelect={setForeclosureDate}
-                  disabled={(date) => {
-                    // Convert start and end dates to Date objects
-                    const startDate = new Date(loan.startDate);
-                    const endDate = new Date(loan.endDate);
-                    
-                    // Disable dates before startDate and after endDate
-                    return date < startDate || date > endDate;
-                  }}
-                  className="rounded-md border shadow p-3 bg-white"
-                  classNames={{
-                    day_selected: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-                    day_today: "bg-accent text-accent-foreground",
-                    day_outside: "text-muted-foreground opacity-50",
-                    day_disabled: "text-muted-foreground opacity-50",
-                    day_range_middle: "aria-selected:bg-accent aria-selected:text-accent-foreground",
-                    day_hidden: "invisible",
-                    caption: "flex justify-center pt-1 relative items-center",
-                    caption_label: "text-sm font-medium",
-                    nav: "space-x-1 flex items-center",
-                    nav_button: cn(
-                      "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
-                    ),
-                    table: "w-full border-collapse space-y-1",
-                    head_row: "flex",
-                    head_cell: "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
-                    row: "flex w-full mt-2",
-                    cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-                    day: cn(
-                      "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground rounded-md"
-                    ),
-                  }}
+                  disabled={[
+                    { before: new Date(loan.startDate) }, // Disable dates before the start date
+                    { after: new Date(loan.endDate) }, // Disable dates after the end date
+                  ]}
+                  className="rounded-md border shadow p-3 bg-background"
                 />
               </div>
               <DialogFooter>

@@ -104,7 +104,7 @@ function RegisterForm() {
     if (verifyResult.success) {
       const registerResult = await apiCall("/api/register/", formData, registerSchema);
       if (registerResult.success) {
-        navigate("/#?msg=1");
+        navigate("/?msg=1");
       } else {
         setError(registerResult.error);
       }

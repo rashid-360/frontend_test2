@@ -46,7 +46,7 @@ instance.interceptors.response.use(
             }
 
             // Redirect to "/" if everything fails
-            window.location.href = "/#/admin/login/#?msg=2"; // Use window.location instead of navigate
+            window.location.href = "/#/admin/login/?msg=2"; // Use window.location instead of navigate
         }
 
         return Promise.reject(error);

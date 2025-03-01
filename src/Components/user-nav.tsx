@@ -22,7 +22,7 @@ function Usernav() {
   const handleLogout = () => {
     localStorage.removeItem("admin_access_token");
     localStorage.removeItem("admin_refresh_token");
-    navigate("/admin/login/#?msg=3");
+    navigate("/admin/login/?msg=3");
   };
 
   return (

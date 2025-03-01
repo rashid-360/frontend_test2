@@ -1,3 +1,3 @@
-const SERVERURL = "http://127.0.0.1:8000"; // Change this to your backend URL
+const SERVERURL = "https://test1-k9b5.onrender.com/"; // Change this to your backend URL
 
 export default SERVERURL;

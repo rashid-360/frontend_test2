@@ -78,6 +78,9 @@ export default function AddLoanForm({ onAddLoan }: AddLoanFormProps) {
     }).then((res)=>{
 
       toast.success('loan added succesfuly ')
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     })
     // Reset form
     setAmount("")

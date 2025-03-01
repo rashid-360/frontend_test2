@@ -66,9 +66,9 @@ export default function LoanDetails({ loan, onForeclose }: LoanDetailsProps) {
         toast.success('Foreclosure successful');
 
         // Optional: Reload page after a delay
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 1000);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
       .catch((error) => {
         console.error("Error foreclosing loan:", error);

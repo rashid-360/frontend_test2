@@ -53,7 +53,7 @@ export default function LoanDetailPage() {
  AdminAxiosInstance.delete(`/api/admin/loan/${loanId}/`).then((res)=>{
 
   toast.success('item deleted successfully ')
-  window.location.href='/admin/loans/'
+  window.location.href='/#/admin/loans/'
  })
     } catch (err) {
       console.error('Error deleting loan:', err);

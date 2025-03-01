@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import type { Loan } from "@/lib/types"
-import { formatCurrency, formatDate } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import type { Loan } from "../lib/types"
+import { formatCurrency, formatDate } from "../lib/utils"
+import { Button } from "../components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -12,11 +12,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Calendar } from "@/components/ui/calendar"
-import { generateAmortizationSchedule } from "@/lib/loan-calculations"
+} from "../components/ui/dialog"
+import { Card, CardContent } from "../components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
+import { Calendar } from "../components/ui/calendar"
+import { generateAmortizationSchedule } from "../lib/loan-calculations"
 import UserAxiosInstance from '../axiosinstance/UserAxiosInstance'
 
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
@@ -202,47 +202,49 @@ export default function LoanDetails({ loan, onForeclose }: LoanDetailsProps) {
       </Tabs>
 
       {loan.status === "active" && (
-        <div className="flex justify-end">
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="destructive">Foreclose Loan</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Foreclose Loan</DialogTitle>
-                <DialogDescription>
-                  Select a date to foreclose this loan. Interest will be calculated up to this date.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="py-4">
-              <Calendar
-  mode="single"
-  selected={foreclosureDate}
-  onSelect={setForeclosureDate}
-  disabled={(date) => {
-    // Convert start and end dates to Date objects
-    const startDate = new Date(loan.startDate);
-    const endDate = new Date(loan.endDate);
-
-    // Disable dates before startDate and after endDate
-    return date < startDate || date > endDate;
-  }}
-  className="mx-auto"
-/>
-
-              </div>
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button variant="destructive" onClick={handleForeclose}>
-                  Confirm Foreclosure
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+  <div className="flex justify-end">
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <DialogTrigger asChild>
+        <Button variant="destructive">Foreclose Loan</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Foreclose Loan</DialogTitle>
+          <DialogDescription>
+            Select a date to foreclose this loan. Interest will be calculated up to this date.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="py-4">
+          <div className="flex justify-center p-4">
+            <Calendar
+              mode="single"
+              selected={foreclosureDate}
+              onSelect={(date) => {
+                if (date) {
+                  setForeclosureDate(date);
+                }
+              }}
+              disabled={(date) => {
+                const startDate = new Date(loan.startDate);
+                const endDate = new Date(loan.endDate);
+                return date < startDate || date > endDate;
+              }}
+              className="rounded-md border"
+            />
+          </div>
         </div>
-      )}
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={handleForeclose}>
+            Confirm Foreclosure
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  </div>
+)}
     </div>
   )
 }

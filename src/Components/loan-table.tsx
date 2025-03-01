@@ -202,7 +202,7 @@ export function LoanTable({ loans }: LoanTableProps) {
                           <a href={`/#/admin/loans/detail?id=${loan.id}`}>View details</a>
                         </DropdownMenuItem>
                         {/* <DropdownMenuItem>Edit</DropdownMenuItem> */}
-                        <DropdownMenuItem className="text-destructive" onClick={handleDelete}>Delete</DropdownMenuItem>
+                        {/* <DropdownMenuItem className="text-destructive" onClick={handleDelete}>Delete</DropdownMenuItem> */}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

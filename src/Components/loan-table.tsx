@@ -199,7 +199,7 @@ export function LoanTable({ loans }: LoanTableProps) {
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
-                          <a href={`/admin/loans/detail?id=${loan.id}`}>View details</a>
+                          <a href={`/#/admin/loans/detail?id=${loan.id}`}>View details</a>
                         </DropdownMenuItem>
                         {/* <DropdownMenuItem>Edit</DropdownMenuItem> */}
                         <DropdownMenuItem className="text-destructive" onClick={handleDelete}>Delete</DropdownMenuItem>

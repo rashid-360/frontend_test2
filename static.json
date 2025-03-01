@@ -1,6 +1,10 @@
 {
     "routes": {
-      "/**": "index.html"
+      "/register": "index.html",
+      "/admin/**": "index.html",
+      "/dashboard": "index.html",
+      "/admin/loans": "index.html",
+      "/admin/loans/detail": "index.html"
     }
   }
   

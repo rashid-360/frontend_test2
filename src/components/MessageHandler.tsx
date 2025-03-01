@@ -11,8 +11,8 @@ interface Message {
 
 const messages: Record<string, Message> = {
   "1": { type: "success", text: "registration successfull" },
-  "2": { type: "success", text: "your session expired ,please login again " },
-  "3": { type: "warning", text: "⚠️ Warning! Check your input." }
+  "2": { type: "error", text: "your session expired ,please login again " },
+  "3": { type: "success", text: "Logged out suucesfully" }
 };
 
 const MessageHandler: React.FC = () => {

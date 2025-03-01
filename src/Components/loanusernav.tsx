@@ -26,7 +26,7 @@ function LoanUsernav() {
     localStorage.removeItem("user_refresh_token");
 
     // Redirect to home/login page
-    navigate("/");
+    navigate("/#?msg=3");
   };
 
   return (

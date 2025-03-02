@@ -81,7 +81,7 @@ export default function UsersPage() {
                         <TableCell>User {userId}</TableCell>
                         <TableCell>user{userId}@example.com</TableCell>
                         <TableCell>{activeLoans.length}</TableCell>
-                        <TableCell>${totalLoanAmount.toLocaleString()}</TableCell>
+                        <TableCell>₹{totalLoanAmount.toLocaleString()}</TableCell>
                         <TableCell className="text-right">
                           <Button variant="ghost" size="sm" asChild>
                             <Link href={`/admin/users/detail?id=${userId}`}>View</Link>
